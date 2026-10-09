@@ -1,0 +1,25 @@
+21:58:00 **** Incremental Build of configuration Nios II for project nios_II_stop_watch ****
+make all 
+Info: Building ../nios_II_stop_watch_bsp/
+C:/intelFPGA_lite/18.1/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../nios_II_stop_watch_bsp/
+[BSP build complete]
+Info: Compiling hello_world.c to obj/default/hello_world.o
+nios2-elf-gcc -xc -MP -MMD -c -I../nios_II_stop_watch_bsp//HAL/inc -I../nios_II_stop_watch_bsp/ -I../nios_II_stop_watch_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -DALT_SINGLE_THREADED    -O0 -g -Wall   -mno-hw-div -mhw-mul -mno-hw-mulx -mgpopt=global  -o obj/default/hello_world.o hello_world.c
+hello_world.c: In function 'main':
+hello_world.c:224:5: warning: implicit declaration of function 'alt_irq_register' [-Wimplicit-function-declaration]
+     alt_irq_register(
+     ^
+Info: Linking nios_II_stop_watch.elf
+nios2-elf-g++  -T'../nios_II_stop_watch_bsp//linker.x' -msys-crt0='../nios_II_stop_watch_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../nios_II_stop_watch_bsp/   -Wl,-Map=nios_II_stop_watch.map   -O0 -g -Wall   -mno-hw-div -mhw-mul -mno-hw-mulx -mgpopt=global  -o nios_II_stop_watch.elf obj/default/hello_world.o -lm -msys-lib=m
+nios2-elf-insert nios_II_stop_watch.elf --thread_model hal --cpu_name nios_II_stop_watch --qsys true --simulation_enabled false --stderr_dev Debug --stdin_dev Debug --stdout_dev Debug --sopc_system_name nios_II_stop_watch --quartus_project_dir "C:/Users/ASUS/Documents/Quartus/nios_II_stop_watch" --jdi ../..//output_files/nios_II_stop_watch.jdi --sopcinfo C:/Users/ASUS/Documents/Quartus/nios_II_stop_watch/software/nios_II_stop_watch_bsp/../../nios_II_stop_watch.sopcinfo
+Info: (nios_II_stop_watch.elf) 30 KBytes program size (code + initialized data).
+Info:                          3420 Bytes free for stack + heap.
+Info: Creating nios_II_stop_watch.objdump
+nios2-elf-objdump --disassemble --syms --all-header --source nios_II_stop_watch.elf >nios_II_stop_watch.objdump
+[nios_II_stop_watch build complete]
+21:58:23 **** Incremental Build of configuration Nios II for project nios_II_stop_watch ****
+make all 
+Info: Building ../nios_II_stop_watch_bsp/
+C:/intelFPGA_lite/18.1/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../nios_II_stop_watch_bsp/
+[BSP build complete]
+[nios_II_stop_watch build complete]

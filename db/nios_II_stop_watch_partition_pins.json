@@ -1,0 +1,213 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "min_export[0]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[1]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[2]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[3]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[4]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[5]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[6]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[7]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[8]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[9]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[10]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[11]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[12]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[13]",
+					"strict" : false
+				},
+				{
+					"name" : "min_export[14]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[0]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[1]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[2]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[3]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[4]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[5]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[6]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[7]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[8]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[9]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[10]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[11]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[12]",
+					"strict" : false
+				},
+				{
+					"name" : "msec_export[13]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[0]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[1]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[2]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[3]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[4]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[5]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[6]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[7]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[8]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[9]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[10]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[11]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[12]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[13]",
+					"strict" : false
+				},
+				{
+					"name" : "sec_export[14]",
+					"strict" : false
+				},
+				{
+					"name" : "clk_clk",
+					"strict" : false
+				},
+				{
+					"name" : "input_export[0]",
+					"strict" : false
+				},
+				{
+					"name" : "input_export[1]",
+					"strict" : false
+				},
+				{
+					"name" : "altera_reserved_tms",
+					"strict" : false
+				},
+				{
+					"name" : "altera_reserved_tck",
+					"strict" : false
+				},
+				{
+					"name" : "altera_reserved_tdi",
+					"strict" : false
+				},
+				{
+					"name" : "altera_reserved_tdo",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

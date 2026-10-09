@@ -1,0 +1,325 @@
+#include <stdio.h>
+#include "system.h"
+#include "io.h"
+#include "altera_avalon_pio_regs.h"
+#include "altera_avalon_timer_regs.h"
+#include "sys/alt_irq.h"
+
+/*
+ * DE10-Lite 7-segment
+ *
+ * Each group:
+ *
+ * bit 14     = DP
+ * bits 13:7  = tens digit
+ * bits 6:0   = units digit
+ *
+ * Displays:
+ *
+ * MIN : SEC : MSEC
+ *
+ * MSEC = 00-99
+ * SEC  = 00-59
+ * MIN  = 00-99
+ *
+ * 7-segment is active LOW.
+ */
+
+
+/* ----------------------------------------------------
+ * 7-segment patterns
+ * -------------------------------------------------- */
+
+#define SEG_0  0x40
+#define SEG_1  0x79
+#define SEG_2  0x24
+#define SEG_3  0x30
+#define SEG_4  0x19
+#define SEG_5  0x12
+#define SEG_6  0x02
+#define SEG_7  0x78
+#define SEG_8  0x00
+#define SEG_9  0x10
+
+unsigned char seg[10] =
+{
+    SEG_0,
+    SEG_1,
+    SEG_2,
+    SEG_3,
+    SEG_4,
+    SEG_5,
+    SEG_6,
+    SEG_7,
+    SEG_8,
+    SEG_9
+};
+
+
+/* ----------------------------------------------------
+ * Stopwatch variables
+ * -------------------------------------------------- */
+
+volatile int milliseconds = 0;
+volatile int seconds = 0;
+volatile int minutes = 0;
+volatile int temp = 0;
+
+volatile int running = 0;
+
+
+/* ----------------------------------------------------
+ * Create two 7-segment digits
+ * -------------------------------------------------- */
+
+unsigned int make_display(int value)
+{
+    int tens;
+    int units;
+
+    tens  = value / 10;
+    units = value % 10;
+
+    return ((unsigned int)seg[tens] << 7) |
+           ((unsigned int)seg[units]);
+}
+
+
+/* ----------------------------------------------------
+ * Update displays
+ * -------------------------------------------------- */
+
+void update_display(void)
+{
+    unsigned int msec_value;
+    unsigned int sec_value;
+    unsigned int min_value;
+
+    msec_value = make_display(milliseconds);
+
+    sec_value = make_display(seconds);
+
+    min_value = make_display(minutes);
+
+    /*
+     * DP
+     *
+     * Bit 14 = DP
+     *
+     * DE10-Lite 7-segment is active LOW.
+     * Therefore DP ON = 0.
+     *
+     * If your DP is wired as active LOW, clear bit 14.
+     */
+
+    sec_value &= ~(1 << 14);
+    min_value &= ~(1 << 14);
+
+    /*
+     * MSEC has no DP.
+     * Bit 14 is not physically used.
+     */
+
+    IOWR_ALTERA_AVALON_PIO_DATA(MSEC_BASE, msec_value);
+
+    IOWR_ALTERA_AVALON_PIO_DATA(SEC_BASE, sec_value);
+
+    IOWR_ALTERA_AVALON_PIO_DATA(MIN_BASE, min_value);
+}
+
+
+/* ----------------------------------------------------
+ * TIMER INTERRUPT SERVICE ROUTINE
+ * -------------------------------------------------- */
+
+static void timer_isr(void *context, alt_u32 id)
+{
+    /*
+     * Clear timer timeout flag
+     *
+     * Writing 0 to TO clears the timeout condition.
+     */
+    IOWR_ALTERA_AVALON_TIMER_STATUS(
+        TIMER_0_BASE,
+        0
+    );
+
+
+    /*
+     * Only count when stopwatch is running
+     */
+    if (running)
+    {
+        /*
+         * Timer = 10 ms
+         *
+         * Therefore each interrupt adds 10 ms.
+         */
+
+        temp += 10;
+
+
+        /*
+         * 1000 ms = 1 second
+         */
+        if (temp >= 10)
+        {
+        	temp = 0;
+        	milliseconds ++;
+
+
+        if (milliseconds >= 100)
+        {
+            milliseconds = 0;
+
+            seconds++;
+
+
+            /*
+             * 60 seconds = 1 minute
+             */
+
+            if (seconds >= 60)
+            {
+                seconds = 0;
+
+                minutes++;
+
+
+                /*
+                 * 100 minutes - 00
+                 */
+
+                if (minutes >= 100)
+                {
+                    minutes = 0;
+                }
+            }
+        }
+    }
+
+    }
+
+    /*
+     * Update display every timer interrupt.
+     */
+    update_display();
+}
+
+
+/* ----------------------------------------------------
+ * MAIN
+ * -------------------------------------------------- */
+
+int main()
+{
+    unsigned int buttons;
+    unsigned int old_buttons = 0x03;
+
+
+    printf("Nios II Stopwatch\n");
+
+    /*
+     * Initial display
+     */
+    update_display();
+
+
+    /*
+     * Register timer interrupt
+     */
+    alt_irq_register(
+        TIMER_0_IRQ,
+        NULL,
+        timer_isr
+    );
+
+
+    /*
+     * Start timer
+     *
+     * ITO  = 1 - enable interrupt
+     * CONT = 1 - continuous mode
+     * START = 1 - start timer
+     */
+
+    IOWR_ALTERA_AVALON_TIMER_CONTROL(
+        TIMER_0_BASE,
+        ALTERA_AVALON_TIMER_CONTROL_ITO_MSK |
+        ALTERA_AVALON_TIMER_CONTROL_CONT_MSK |
+        ALTERA_AVALON_TIMER_CONTROL_START_MSK
+    );
+
+
+    while (1)
+    {
+        /*
+         * Read buttons
+         *
+         * input_export[0] = START / STOP
+         * input_export[1] = RESET
+         *
+         * Assuming active LOW buttons.
+         */
+
+        buttons = IORD_ALTERA_AVALON_PIO_DATA(INPUT_BASE);
+
+
+        /* --------------------------------------------
+         * START / STOP
+         * ------------------------------------------ */
+
+        if ((old_buttons & 0x01) &&
+            !(buttons & 0x01))
+        {
+            running = !running;
+
+            /*
+             * Simple debounce
+             *
+             * IMPORTANT:
+             * This delay does NOT control stopwatch timing.
+             * Timer interrupt continues independently.
+             */
+            for (volatile int i = 0; i < 50000; i++)
+                ;
+        }
+
+
+        /* --------------------------------------------
+         * RESET
+         * ------------------------------------------ */
+
+        if ((old_buttons & 0x02) &&
+            !(buttons & 0x02))
+        {
+            /*
+             * Stop stopwatch
+             */
+            running = 0;
+
+            /*
+             * Reset time
+             */
+            temp = 0;
+            milliseconds = 0;
+            seconds = 0;
+            minutes = 0;
+
+            update_display();
+
+
+            /*
+             * Debounce
+             */
+            for (volatile int i = 0; i < 50000; i++)
+                ;
+        }
+
+
+        old_buttons = buttons;
+    }
+
+
+    return 0;
+}

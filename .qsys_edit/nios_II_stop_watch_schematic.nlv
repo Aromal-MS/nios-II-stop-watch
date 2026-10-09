@@ -1,0 +1,27 @@
+# # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
+# 
+preplace inst nios_II_stop_watch.nios_II_stop_watch.cpu -pg 1
+preplace inst nios_II_stop_watch.MSec -pg 1 -lvl 3 -y 310
+preplace inst nios_II_stop_watch.SRAM -pg 1 -lvl 3 -y 230
+preplace inst nios_II_stop_watch.Debug -pg 1 -lvl 3 -y 30
+preplace inst nios_II_stop_watch -pg 1 -lvl 1 -y 40 -regy -20
+preplace inst nios_II_stop_watch.clk_0 -pg 1 -lvl 2 -y 130
+preplace inst nios_II_stop_watch.Sec -pg 1 -lvl 3 -y 510
+preplace inst nios_II_stop_watch.Input -pg 1 -lvl 3 -y 610
+preplace inst nios_II_stop_watch.timer_0 -pg 1 -lvl 3 -y 130
+preplace inst nios_II_stop_watch.nios_II_stop_watch.reset_bridge -pg 1
+preplace inst nios_II_stop_watch.Min -pg 1 -lvl 3 -y 410
+preplace inst nios_II_stop_watch.nios_II_stop_watch -pg 1 -lvl 1 -y 200
+preplace inst nios_II_stop_watch.nios_II_stop_watch.clock_bridge -pg 1
+preplace netloc EXPORT<net_container>nios_II_stop_watch</net_container>(SLAVE)nios_II_stop_watch.msec,(SLAVE)MSec.external_connection) 1 0 3 NJ 340 NJ 340 NJ
+preplace netloc EXPORT<net_container>nios_II_stop_watch</net_container>(SLAVE)nios_II_stop_watch.sec,(SLAVE)Sec.external_connection) 1 0 3 NJ 540 NJ 540 NJ
+preplace netloc FAN_OUT<net_container>nios_II_stop_watch</net_container>(SLAVE)MSec.reset,(SLAVE)Input.reset,(MASTER)clk_0.clk_reset,(SLAVE)SRAM.reset1,(SLAVE)nios_II_stop_watch.reset,(SLAVE)Sec.reset,(SLAVE)Debug.reset,(SLAVE)timer_0.reset,(SLAVE)Min.reset) 1 0 3 80 100 NJ 100 720
+preplace netloc FAN_OUT<net_container>nios_II_stop_watch</net_container>(MASTER)nios_II_stop_watch.irq,(SLAVE)timer_0.irq,(SLAVE)Debug.irq) 1 1 2 NJ 290 740
+preplace netloc EXPORT<net_container>nios_II_stop_watch</net_container>(SLAVE)nios_II_stop_watch.input,(SLAVE)Input.external_connection) 1 0 3 NJ 640 NJ 640 NJ
+preplace netloc POINT_TO_POINT<net_container>nios_II_stop_watch</net_container>(MASTER)nios_II_stop_watch.debug_reset_request,(SLAVE)clk_0.clk_in_reset) 1 1 1 500
+preplace netloc INTERCONNECT<net_container>nios_II_stop_watch</net_container>(MASTER)nios_II_stop_watch.instruction_master,(SLAVE)SRAM.s1,(SLAVE)timer_0.s1,(SLAVE)nios_II_stop_watch.debug_mem_slave,(SLAVE)MSec.s1,(SLAVE)Input.s1,(SLAVE)Min.s1,(MASTER)nios_II_stop_watch.data_master,(SLAVE)Sec.s1,(SLAVE)Debug.avalon_jtag_slave) 1 0 3 120 160 480 270 700
+preplace netloc EXPORT<net_container>nios_II_stop_watch</net_container>(SLAVE)nios_II_stop_watch.clk,(SLAVE)clk_0.clk_in) 1 0 2 NJ 140 NJ
+preplace netloc EXPORT<net_container>nios_II_stop_watch</net_container>(SLAVE)nios_II_stop_watch.sec_1,(SLAVE)Min.external_connection) 1 0 3 NJ 440 NJ 440 NJ
+preplace netloc FAN_OUT<net_container>nios_II_stop_watch</net_container>(SLAVE)Sec.clk,(SLAVE)Input.clk,(SLAVE)nios_II_stop_watch.clk,(SLAVE)SRAM.clk1,(SLAVE)timer_0.clk,(SLAVE)Debug.clk,(SLAVE)Min.clk,(MASTER)clk_0.clk,(SLAVE)MSec.clk) 1 0 3 100 120 NJ 120 760
+levelinfo -pg 1 0 50 950
+levelinfo -hier nios_II_stop_watch 60 240 530 790 940
